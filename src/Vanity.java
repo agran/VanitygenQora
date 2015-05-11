@@ -56,6 +56,7 @@ public class Vanity {
 			for (int m=0; m<=availableProcessors-1; m++){
 				Runnable r = new MyRunnable();
 				Thread t = new Thread(r);
+				t.setPriority( Thread.MIN_PRIORITY ); 
 				t.start(); 
 			}
 
