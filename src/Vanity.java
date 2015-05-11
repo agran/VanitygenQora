@@ -25,7 +25,7 @@ public class Vanity {
 			
 			Scanner scanner = new Scanner(System.in);
 			
-			System.out.println("VanitygenQora 1.1.0  © agran@agran.net");
+			System.out.println("VanitygenQora 1.1.1 (c) agran@agran.net");
 			
 			do {
 			System.out.print("Enter the beginning of the Qora-address (with letter Q): ");
