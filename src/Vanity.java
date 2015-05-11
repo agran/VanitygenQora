@@ -25,7 +25,7 @@ public class Vanity {
 			
 			Scanner scanner = new Scanner(System.in);
 			
-			System.out.println("VanitygenQora 1.1.1 (c) agran@agran.net");
+			System.out.println("VanitygenQora 1.1.2 (c) agran@agran.net");
 			
 			do {
 			System.out.print("Enter the beginning of the Qora-address (with letter Q): ");
@@ -139,6 +139,9 @@ public class Vanity {
 				counter = counter / intsleep;
 				if(!firsttime)
 				{
+					System.out.print("pattern: "+ pattern + " | ");
+					
+					
 					if(nowTime > 58)
 					{
 						System.out.print("time: "+ nowTime/60  + "min ");
@@ -148,7 +151,7 @@ public class Vanity {
 					{
 						System.out.print("time: "+ nowTime  + "sec ");
 					}	
-					System.out.println("address/sec: " + counter*10 + " seed/sec: " + counter);
+					System.out.println("| address/sec: " + counter*10);
 				}
 				counter = 0;
 				try {
