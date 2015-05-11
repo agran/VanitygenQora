@@ -1,0 +1,1 @@
+start "Qora" java -Xmx512m -Djava.library.path=libs/native -jar VanitygenQora.jar
