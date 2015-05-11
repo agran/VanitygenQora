@@ -1,6 +1,9 @@
 import java.security.SecureRandom;
 import java.util.Scanner;
 import java.util.Random;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import qora.crypto.Base58;
 import qora.crypto.Crypto;
@@ -24,7 +27,7 @@ public class Vanity {
 	
 			Scanner scanner = new Scanner(System.in);
 			
-			System.out.println("VanitygenQora 1.1.3 (c) agran@agran.net");
+			System.out.println("VanitygenQora 1.1.4 (c) agran@agran.net");
 								
 			do {
 				System.out.print("Enter the beginning of the Qora-address (with letter Q): ");
@@ -139,6 +142,19 @@ public class Vanity {
 			if(doneaddr != "")
 			{
 				System.out.println("address: " + doneaddr + " seed: " + doneseed);
+
+				try {
+				    BufferedWriter out = new BufferedWriter(
+				    		new FileWriter("result.txt", true));
+
+				    out.write("address: " + doneaddr + " seed: " + doneseed + "\r\n");
+				    out.close();
+					System.out.println("Warning! Seed was stored in the file result.txt");
+					
+				} catch (IOException e) {
+				    e.printStackTrace();
+				}
+				
 				new java.util.Scanner(System.in).nextLine();
 			}
 		} 
