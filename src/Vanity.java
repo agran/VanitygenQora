@@ -15,8 +15,9 @@ public class Vanity {
 
 	public static boolean done = false; 
 	public static String pattern = "";
-	
-	
+	public static int counter = 0;
+	public static long startTime = 0;
+
 	public static void main(String args[])
 	{	
 			Ed25519.load();
@@ -24,7 +25,10 @@ public class Vanity {
 			
 			Scanner scanner = new Scanner(System.in);
 			
-			System.out.print("Enter the beginning of the address (with letter Q): ");
+			System.out.println("VanitygenQora 1.1.0  © agran@agran.net");
+			
+			do {
+			System.out.print("Enter the beginning of the Qora-address (with letter Q): ");
 			String command = scanner.nextLine();
 			
 			if(command.equals("quit"))
@@ -42,15 +46,26 @@ public class Vanity {
 				}
 			}
 			
+			pattern = command;
+			
 			if(!check)
 			{
 				System.out.println("\"" + command + "\" contains invalid characters.");
-				new java.util.Scanner(System.in).nextLine();
-				scanner.close();
-				System.exit(0);
+				pattern = "";
 			}
 			
-			pattern = command;
+			if(!command.startsWith("Q"))
+			{
+				System.out.println("Pattern must begin with Q.");
+				pattern = "";
+			}
+			
+			} while (pattern == "");
+			
+			System.out.println("The search has begun. Please wait...");
+			System.out.println();
+			
+			startTime = System.currentTimeMillis()/1000;
 			
 			int availableProcessors = Runtime.getRuntime().availableProcessors();
 			for (int m=0; m<=availableProcessors-1; m++){
@@ -60,6 +75,10 @@ public class Vanity {
 				t.start(); 
 			}
 
+			Timer r = new Timer();
+			Thread t = new Thread(r);
+			t.setPriority( Thread.MIN_PRIORITY ); 
+			t.start(); 			
 	}
 
 	private static byte[] generateAccountSeed(byte[] seed, int nonce) 
@@ -100,6 +119,7 @@ public class Vanity {
 				    }
 				    nonce ++;
 				}
+				counter ++;
 			}
 			if(doneaddr != "")
 			{
@@ -108,5 +128,39 @@ public class Vanity {
 			}
 		} 
 	}
+	
+	public static class Timer implements Runnable {
+		public void run() {
+			int intsleep = 5;
+			boolean firsttime = true;
+			while(!done)
+			{
+				long nowTime = (System.currentTimeMillis()/1000 - startTime);
+				counter = counter / intsleep;
+				if(!firsttime)
+				{
+					if(nowTime > 58)
+					{
+						System.out.print("time: "+ nowTime/60  + "min ");
+						intsleep = 60;
+					}
+					else
+					{
+						System.out.print("time: "+ nowTime  + "sec ");
+					}	
+					System.out.println("address/sec: " + counter*10 + " seed/sec: " + counter);
+				}
+				counter = 0;
+				try {
+					Thread.sleep(intsleep*1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				firsttime = false;
+			}
+		} 
+	}	
 }
+
 
