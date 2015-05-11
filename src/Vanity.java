@@ -22,44 +22,59 @@ public class Vanity {
 	{	
 			Ed25519.load();
 	
-			
 			Scanner scanner = new Scanner(System.in);
 			
-			System.out.println("VanitygenQora 1.1.2 (c) agran@agran.net");
-			
+			System.out.println("VanitygenQora 1.1.3 (c) agran@agran.net");
+								
 			do {
-			System.out.print("Enter the beginning of the Qora-address (with letter Q): ");
-			String command = scanner.nextLine();
-			
-			if(command.equals("quit"))
-			{
-				scanner.close();
-				System.exit(0);
-			}
+				System.out.print("Enter the beginning of the Qora-address (with letter Q): ");
 				
-			boolean check = true;
-			for (int m=0; m<=command.length()-1; m++){
-				String sub_str = command.substring(m, m+1);
-				if(Base58.ALPHABET.indexOf(sub_str) == -1)
+				String command = "";
+				if(args.length>0)
 				{
-					check = false;
+					System.out.println(args[0]);
+					command = args[0];
 				}
-			}
-			
-			pattern = command;
-			
-			if(!check)
-			{
-				System.out.println("\"" + command + "\" contains invalid characters.");
-				pattern = "";
-			}
-			
-			if(!command.startsWith("Q"))
-			{
-				System.out.println("Pattern must begin with Q.");
-				pattern = "";
-			}
-			
+				else
+				{	
+					command = scanner.nextLine();
+				}
+				
+				if(command.equals("quit"))
+				{
+					scanner.close();
+					System.exit(0);
+				}
+					
+				boolean check = true;
+				for (int m=0; m<=command.length()-1; m++){
+					String sub_str = command.substring(m, m+1);
+					if(Base58.ALPHABET.indexOf(sub_str) == -1)
+					{
+						check = false;
+					}
+				}
+				
+				pattern = command;
+				
+				if(!check)
+				{
+					System.out.println("\"" + command + "\" contains invalid characters.");
+					pattern = "";
+				}
+				
+				if(!command.startsWith("Q"))
+				{
+					System.out.println("Pattern must begin with Q.");
+					pattern = "";
+				}
+				
+				if(args.length>0 && pattern == "")
+				{
+					scanner.close();
+					System.exit(0);
+				}
+				
 			} while (pattern == "");
 			
 			System.out.println("The search has begun. Please wait...");
