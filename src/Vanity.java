@@ -21,14 +21,43 @@ public class Vanity {
 	public static int counter = 0;
 	public static long startTime = 0;
 
+	@SuppressWarnings("resource")
 	public static void main(String args[])
 	{	
 			Ed25519.load();
 	
 			Scanner scanner = new Scanner(System.in);
 			
-			System.out.println("VanitygenQora 1.1.4 (c) agran@agran.net");
-								
+			System.out.println("VanitygenQora 1.2.0 (c) agran@agran.net");
+				
+			if(args.length>0 && args[0].length()>40)
+			{
+				
+				byte[] seed = Base58.decode(args[0]);;
+				
+				int nonce = 0;
+				
+			    System.out.println("wallet seed: " + args[0]);
+
+			    while(nonce<10)
+				{
+					byte[] accountSeed = generateAccountSeed(seed, nonce);
+					
+					Pair<byte[], byte[]> keyPair = Crypto.getInstance().createKeyPair(accountSeed);
+					byte[] publicKey = keyPair.getB();
+					String address = Crypto.getInstance().getAddress(publicKey);
+					
+				    String doneseedaddress = Base58.encode(accountSeed);
+				    
+				    System.out.println("nonce: " + nonce + " address: " + address + " address seed: " + doneseedaddress);
+				    
+				    nonce ++;
+				}
+				
+			    new java.util.Scanner(System.in).nextLine();
+				System.exit(0);
+			}
+			
 			do {
 				System.out.print("Enter the beginning of the Qora-address (with letter Q): ");
 				
@@ -109,6 +138,7 @@ public class Vanity {
 	public static class MyRunnable implements Runnable {
 		public void run() {		
 			String doneseed = "";
+			String doneseedaddress = "";
 			String doneaddr = "";
 			
 			byte[] seed = new byte[32];
@@ -132,6 +162,7 @@ public class Vanity {
 				    if(address.startsWith(pattern))
 				    {
 				    	doneseed = Base58.encode(seed);
+				    	doneseedaddress = Base58.encode(accountSeed);
 				    	doneaddr = address;
 				    	done = true;
 				    }
@@ -141,13 +172,16 @@ public class Vanity {
 			}
 			if(doneaddr != "")
 			{
-				System.out.println("address: " + doneaddr + " seed: " + doneseed);
-
+				System.out.println("address: " + doneaddr + " wallet seed: " + doneseed + " address seed: " + doneseedaddress);
+				System.out.println("Create a new wallet restoring from wallet seed: " + doneseed);
+				System.out.println("or run in console command: POST addresses " + doneseedaddress);
+				System.out.println();
+						
 				try {
 				    BufferedWriter out = new BufferedWriter(
 				    		new FileWriter("result.txt", true));
 
-				    out.write("address: " + doneaddr + " seed: " + doneseed + "\r\n");
+				    out.write("address: " + doneaddr + " wallet seed: " + doneseed + " address seed: " + doneseedaddress + "\r\n");
 				    out.close();
 					System.out.println("Warning! Seed was stored in the file result.txt");
 					
