@@ -28,7 +28,7 @@ public class Vanity {
 	
 			Scanner scanner = new Scanner(System.in);
 			
-			System.out.println("VanitygenQora 1.2.0 (c) agran@agran.net");
+			System.out.println("VanitygenQora 1.2.1 (c) agran@agran.net");
 				
 			if(args.length>0 && args[0].length()>40)
 			{
@@ -49,7 +49,7 @@ public class Vanity {
 					
 				    String doneseedaddress = Base58.encode(accountSeed);
 				    
-				    System.out.println("nonce: " + nonce + " address: " + address + " address seed: " + doneseedaddress);
+				    System.out.println("nonce: " + nonce + " | address: " + address + " | address seed: " + doneseedaddress);
 				    
 				    nonce ++;
 				}
@@ -172,7 +172,12 @@ public class Vanity {
 			}
 			if(doneaddr != "")
 			{
-				System.out.println("address: " + doneaddr + " wallet seed: " + doneseed + " address seed: " + doneseedaddress);
+				
+				System.out.println("Found!");
+				System.out.println("address: " + doneaddr);
+				System.out.println("wallet seed: " + doneseed);
+				System.out.println("address seed: " + doneseedaddress);
+				System.out.println();
 				System.out.println("Create a new wallet restoring from wallet seed: " + doneseed);
 				System.out.println("or run in console command: POST addresses " + doneseedaddress);
 				System.out.println();
@@ -181,7 +186,7 @@ public class Vanity {
 				    BufferedWriter out = new BufferedWriter(
 				    		new FileWriter("result.txt", true));
 
-				    out.write("address: " + doneaddr + " wallet seed: " + doneseed + " address seed: " + doneseedaddress + "\r\n");
+				    out.write("address: " + doneaddr + " | wallet seed: " + doneseed + " | address seed: " + doneseedaddress + "\r\n");
 				    out.close();
 					System.out.println("Warning! Seed was stored in the file result.txt");
 					
