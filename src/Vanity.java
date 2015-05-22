@@ -28,7 +28,7 @@ public class Vanity {
 	
 			Scanner scanner = new Scanner(System.in);
 			
-			System.out.println("VanitygenQora 1.3.0 (c) agran@agran.net");
+			System.out.println("VanitygenQora 1.3.1 (c) agran@agran.net");
 				
 			if(args.length>0 && args[0].length()>40)
 			{
@@ -46,19 +46,33 @@ public class Vanity {
 			    	col = Integer.valueOf(args[1]);
 			    }
 			    
-			    while(nonce<col)
-				{
-					byte[] accountSeed = generateAccountSeed(seed, nonce);
-					
-					Pair<byte[], byte[]> keyPair = Crypto.getInstance().createKeyPair(accountSeed);
-					byte[] publicKey = keyPair.getB();
-					String address = Crypto.getInstance().getAddress(publicKey);
-					
-				    String doneseedaddress = Base58.encode(accountSeed);
-				    
-				    System.out.println("nonce: " + nonce + " | address: " + address + " | address seed: " + doneseedaddress);
-				    
-				    nonce ++;
+				
+				try {
+				    BufferedWriter out = new BufferedWriter(
+				    		new FileWriter("resultaddr.txt", true));
+
+				    while(nonce<col)
+					{
+						byte[] accountSeed = generateAccountSeed(seed, nonce);
+						
+						Pair<byte[], byte[]> keyPair = Crypto.getInstance().createKeyPair(accountSeed);
+						byte[] publicKey = keyPair.getB();
+						String address = Crypto.getInstance().getAddress(publicKey);
+						
+					    String doneseedaddress = Base58.encode(accountSeed);
+					    
+					    System.out.println("nonce: " + nonce + " | address: " + address + " | address seed: " + doneseedaddress);
+					    
+					    out.write("nonce: " + nonce + " | address: " + address + " | address seed: " + doneseedaddress + "\r\n");
+						
+					    nonce ++;
+					}
+			
+				    out.close();
+					System.out.println("Warning! Seed was stored in the file resultaddr.txt");
+			
+				} catch (IOException e) {
+				    e.printStackTrace();
 				}
 				
 			    new java.util.Scanner(System.in).nextLine();
